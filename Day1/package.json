@@ -1,0 +1,27 @@
+{
+  "name": "gemini-day-01",
+  "version": "1.0.0",
+  "description": "Gemini Node.js client wrapper with streaming, JSON mode, tool calling, and resilient retry logic.",
+  "type": "module",
+  "main": "gemini-client.mjs",
+  "bin": {
+    "ask-gemini": "./ask-gemini.mjs"
+  },
+  "scripts": {
+    "start": "node ask-gemini.mjs",
+    "test": "node verify-day1.mjs"
+  },
+  "keywords": [
+    "gemini",
+    "google-genai",
+    "cli",
+    "streaming",
+    "tool-calling"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.21.0",
+    "dotenv": "^16.4.7"
+  }
+}
