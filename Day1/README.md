@@ -37,14 +37,53 @@ chmod +x ask-gemini.mjs
 | `--prompt` | `-p` | `string` | *None* | Prompt text (can also be passed as positional arguments). |
 | `--json` | | `boolean` | `false` | Enforce schema-validated structured JSON output via `responseSchema`. |
 | `--tool` | | `boolean` | `false` | Enables tool/function calling mode (`getCurrentWeather` live mock). |
-| `--model` | | `string` | `gemini-3.6-flash` | Gemini model name. |
+| `--model` | | `string` | `gemini-3.5-flash-lite` | Gemini model name. |
 | `--temperature` | | `float` | `0.7` | Sampling temperature (`0.0` for deterministic, `1.0+` for creative). |
 | `--system` | `-s` | `string` | *None* | System instruction to set persona or constraints. |
 | `--help` | `-h` | `boolean` | `false` | Displays usage guide and examples. |
 
 ---
 
-## 3. Usage Examples
+## 3. Modular Architecture & Project Structure
+
+The codebase is organized into single-responsibility modules inside `src/`:
+
+```text
+Day1/
+├── ask-gemini.mjs         # CLI entry point (argument parsing, terminal UI)
+├── gemini-client.mjs      # Unified facade re-exporting all capabilities
+├── verify-day1.mjs        # Automated test suite (npm test)
+├── package.json           # ESM configuration & dependencies
+├── .env                   # API Key configuration
+├── .gitignore             # Excludes .env & node_modules
+└── src/
+    ├── retry.mjs          # Exponential backoff, jitter, and RetryInfo handler
+    ├── tokens.mjs         # Token counting & usage metadata formatting
+    ├── streaming.mjs      # Async generator for real-time token streaming
+    ├── json-mode.mjs      # Schema definition & structured JSON generator
+    └── tool-calling.mjs   # Function declaration, handler, & multi-turn loop
+```
+
+### Module Responsibilities
+
+1. **[`src/retry.mjs`](file:///home/poorti/Desktop/training2.0/Day1/src/retry.mjs)**
+   Provides `withRetry()` and `isTransientError()`. Automatically catches 429, 500, 502, 503, and network timeouts. Inspects server `RetryInfo` headers (e.g. "retry in 15s") and uses full randomized jitter to avoid thundering herd.
+
+2. **[`src/tokens.mjs`](file:///home/poorti/Desktop/training2.0/Day1/src/tokens.mjs)**
+   Provides `countInputTokens()` (estimates prompt tokens beforehand) and `formatUsageMetadata()` (formats input, candidate, and total tokens for clean terminal display).
+
+3. **[`src/streaming.mjs`](file:///home/poorti/Desktop/training2.0/Day1/src/streaming.mjs)**
+   Provides `streamContent()` — an asynchronous generator (`async *`) yielding `{ text, usageMetadata }` chunks as they arrive over HTTP streaming.
+
+4. **[`src/json-mode.mjs`](file:///home/poorti/Desktop/training2.0/Day1/src/json-mode.mjs)**
+   Provides `defaultOutputSchema` and `generateStructuredJSON()`. Enforces strict schemas and safely parses the resulting JSON.
+
+5. **[`src/tool-calling.mjs`](file:///home/poorti/Desktop/training2.0/Day1/src/tool-calling.mjs)**
+   Provides `weatherToolDeclaration`, `defaultWeatherToolHandler()`, and `executeToolLoop()`. Manages the full multi-turn cycle: sending prompt, detecting function calls, executing local functions, and returning function responses to Gemini.
+
+---
+
+## 4. Usage Examples
 
 ### 1. Real-time Token Streaming
 Streams tokens to `stdout` as they arrive, estimating prompt tokens beforehand and logging total token counts when complete.
@@ -84,7 +123,7 @@ Demonstrates multi-turn function execution. The model requests `getCurrentWeathe
 
 ---
 
-## 4. Resilience Architecture
+## 5. Resilience Architecture
 
 ### Exponential Backoff with Full Jitter
 Calls to Gemini are wrapped with `withRetry()` in `gemini-client.mjs`:
@@ -95,7 +134,7 @@ Calls to Gemini are wrapped with `withRetry()` in `gemini-client.mjs`:
 
 ---
 
-## 5. Automated Verification Test Suite
+## 6. Automated Verification Test Suite
 
 Run the full end-to-end verification suite:
 ```bash
@@ -110,7 +149,7 @@ Verifies:
 
 ---
 
-## 6. Interview Hour Reference
+## 7. Interview Hour Reference
 
 1. **What is a Token?**
    A token is the atomic unit of text (roughly 3–4 characters or ¾ of a word in English) that an LLM ingests, embeds, and predicts via a tokenizer. Models operate on numerical token IDs rather than raw characters or full words.

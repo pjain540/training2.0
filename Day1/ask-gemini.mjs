@@ -4,7 +4,8 @@ import { parseArgs } from 'node:util';
 import {
   createGeminiClient,
   weatherToolDeclaration,
-  defaultWeatherToolHandler
+  defaultWeatherToolHandler,
+  formatUsageMetadata
 } from './gemini-client.mjs';
 
 // ANSI color helpers
@@ -25,7 +26,7 @@ const optionsConfig = {
   prompt: { type: 'string', short: 'p' },
   json: { type: 'boolean', default: false },
   tool: { type: 'boolean', default: false },
-  model: { type: 'string', default: 'gemini-3.6-flash' },
+  model: { type: 'string', default: 'gemini-3.5-flash-lite' },
   temperature: { type: 'string', default: '0.7' },
   system: { type: 'string', short: 's' },
   help: { type: 'boolean', short: 'h', default: false }
@@ -111,9 +112,7 @@ function handleRetry(attempt, maxRetries, delayMs, err) {
 function displayUsage(usage) {
   if (!usage) return;
   console.log(`\n${colors.dim}--------------------------------------------------${colors.reset}`);
-  console.log(
-    `${colors.dim}Token Usage: Prompt: ${usage.promptTokenCount ?? 'N/A'} | Candidates: ${usage.candidatesTokenCount ?? 'N/A'} | Total: ${usage.totalTokenCount ?? 'N/A'}${colors.reset}`
-  );
+  console.log(`${colors.dim}${formatUsageMetadata(usage)}${colors.reset}`);
 }
 
 // 5. Main Execution Flow
@@ -142,7 +141,7 @@ async function main() {
       handler: defaultWeatherToolHandler,
       onToolExecute: (name, args) => {
         console.log(`${colors.yellow}⚡ Model invoked tool: ${name}(${JSON.stringify(args)})${colors.reset}`);
-        console.log(`${colors.green}✔ Tool returned live mock result to model.${colors.reset}\n`);
+        console.log(`${colors.green}✔ Tool fetched and returned live Open-Meteo weather data to model.${colors.reset}\n`);
       },
       onRetry: handleRetry
     });
