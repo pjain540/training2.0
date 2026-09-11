@@ -1,0 +1,29 @@
+{
+  "name": "gemini-day-02",
+  "version": "1.0.0",
+  "description": "Hand-rolled ReAct-style autonomous agent from scratch with tool dispatch, working memory, and visible execution trace.",
+  "type": "module",
+  "main": "agent.mjs",
+  "bin": {
+    "run-agent": "./run-agent.mjs"
+  },
+  "scripts": {
+    "start": "node run-agent.mjs \"What is 15% of the population of France?\"",
+    "agent": "node run-agent.mjs",
+    "test": "node verify-day2.mjs"
+  },
+  "keywords": [
+    "gemini",
+    "agent",
+    "react-loop",
+    "tool-dispatch",
+    "working-memory",
+    "autonomous-agent"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.21.0",
+    "dotenv": "^16.4.7"
+  }
+}
