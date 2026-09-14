@@ -1,0 +1,33 @@
+{
+  "name": "gemini-day-03",
+  "version": "1.0.0",
+  "description": "End-to-end RAG pipeline from first principles: chunking, embeddings, vector storage, retrieval, grounding, and citations.",
+  "type": "module",
+  "main": "src/rag-pipeline.mjs",
+  "bin": {
+    "rag-ingest": "./ingest.mjs",
+    "rag-query": "./query.mjs"
+  },
+  "scripts": {
+    "ingest": "node ingest.mjs",
+    "query": "node query.mjs",
+    "chat": "node query.mjs --chat",
+    "test": "node verify-day3.mjs"
+  },
+  "keywords": [
+    "rag",
+    "gemini",
+    "embeddings",
+    "vector-database",
+    "chunking",
+    "grounding",
+    "citations"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.21.0",
+    "dotenv": "^16.4.7",
+    "pdf-parse": "^1.1.1"
+  }
+}
