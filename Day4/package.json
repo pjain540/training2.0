@@ -1,0 +1,24 @@
+{
+  "name": "gemini-day-04",
+  "version": "1.0.0",
+  "description": "Day 4 — Multi-Agent Orchestration with Supervisor, RAG Researcher, Writer, Critic, and HITL gate",
+  "type": "module",
+  "main": "run-pipeline.mjs",
+  "scripts": {
+    "start": "node run-pipeline.mjs",
+    "test": "node verify-day4.mjs"
+  },
+  "keywords": [
+    "multi-agent",
+    "orchestration",
+    "supervisor",
+    "gemini",
+    "human-in-the-loop"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.21.0",
+    "dotenv": "^16.4.7"
+  }
+}
