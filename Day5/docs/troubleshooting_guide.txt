@@ -1,0 +1,32 @@
+NebulaCloud Operational Troubleshooting & Runbook Guide
+Document Version: 2.4.0
+Classification: Internal Engineering
+
+1. ERROR CODE: ERR_RAFT_LEADER_ELECT_FAILED
+Symptom: Atlas cluster fails to achieve consensus; write requests return HTTP 503 Service Unavailable.
+Probable Causes:
+- Network partition between Availability Zone A and Zone B.
+- Leader node disk I/O saturated (>98% utilization), missing heartbeat deadline.
+Remediation Steps:
+Step 1: Check node status via CLI: `atlas-ctl cluster status --format=json`
+Step 2: Inspect raft heartbeat latency: `atlas-ctl metrics get raft_heartbeat_ms`
+Step 3: If heartbeat exceeds 500ms, isolate the lagging node: `atlas-ctl member isolate --node-id=<id>`
+Step 4: Once isolated, initiate safe leader promotion: `atlas-ctl leader elect --force-min-quorum`
+
+2. ERROR CODE: ERR_REDIS_EVICTION_THRESHOLD
+Symptom: Read latency spikes past 80ms; Cortex cache evicts keys faster than 5,000 keys/sec.
+Probable Causes:
+- Memory fragmentation ratio > 1.8.
+- Sudden tenant bulk backfill overloading cache memory budget (maxmemory 32GB).
+Remediation Steps:
+Step 1: Inspect memory status: `redis-cli -p 6379 info memory`
+Step 2: Trigger active defragmentation: `redis-cli CONFIG SET activedefrag yes`
+Step 3: Temporarily scale cache nodes from 3 to 6 replicas: `cortex-scaler scale --replicas=6`
+
+3. ERROR CODE: ERR_CONN_TIMEOUT_504
+Symptom: Apex Gateway returns HTTP 504 Gateway Timeout during peak hours.
+Probable Causes:
+- Downstream microservice connection pool exhaustion (default pool size 500).
+Remediation Steps:
+Step 1: Increase connection pool limit to 1500: `kubectl patch deployment apex-gateway --patch-file=patch-pool.yaml`
+Step 2: Restart gateway rollout: `kubectl rollout restart deployment/apex-gateway`

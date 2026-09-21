@@ -1,0 +1,35 @@
+{
+  "name": "gemini-day-05",
+  "version": "1.0.0",
+  "description": "Day 5 — LangChain Framework: LCEL RAG retrieval chain and tool-calling agent with comparative analysis",
+  "type": "module",
+  "main": "src/rag-chain.mjs",
+  "scripts": {
+    "start": "node run-agent.mjs",
+    "rag": "node run-rag.mjs",
+    "agent": "node run-agent.mjs",
+    "test": "node verify-day5.mjs"
+  },
+  "keywords": [
+    "langchain",
+    "lcel",
+    "gemini",
+    "rag",
+    "agent",
+    "tool-calling",
+    "retrieval"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.23.0",
+    "@langchain/community": "^1.1.29",
+    "@langchain/core": "^1.2.11",
+    "@langchain/google-genai": "^2.3.2",
+    "@langchain/langgraph": "^1.4.15",
+    "@langchain/textsplitters": "^1.0.1",
+    "dotenv": "^16.4.7",
+    "langchain": "^1.5.11",
+    "zod": "^3.24.2"
+  }
+}
