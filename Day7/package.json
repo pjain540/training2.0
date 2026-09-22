@@ -1,0 +1,33 @@
+{
+  "name": "gemini-day-07",
+  "version": "1.0.0",
+  "description": "Day 7 — Model Context Protocol (MCP): Custom Server, Client Transport, Tool/Resource Exposure, and LangGraph Agent Integration",
+  "type": "module",
+  "main": "src/run-agent.mjs",
+  "scripts": {
+    "start": "node src/run-agent.mjs",
+    "server": "node src/server.mjs",
+    "test": "node verify-day7.mjs"
+  },
+  "keywords": [
+    "mcp",
+    "model-context-protocol",
+    "tools",
+    "resources",
+    "sqlite",
+    "agent",
+    "langgraph",
+    "gemini"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@google/genai": "^2.24.0",
+    "@langchain/core": "^1.2.12",
+    "@langchain/langgraph": "^1.4.17",
+    "@modelcontextprotocol/sdk": "^1.30.0",
+    "dotenv": "^18.0.2",
+    "sql.js": "^1.14.2",
+    "zod": "^3.25.1"
+  }
+}
