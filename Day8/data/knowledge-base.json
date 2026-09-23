@@ -1,0 +1,54 @@
+[
+  {
+    "id": "KB-RUNBOOK-001",
+    "title": "Cloud Infrastructure Database Latency & Connection Pool Runbook",
+    "category": "infrastructure",
+    "text": "When database query latency exceeds 250ms or connection pools exceed 85% capacity, the automated triage agent must diagnose the active slow queries. Allowed remediation actions: (1) Scale read replica pool size up to maximum 200 connections. (2) Terminate idle transaction locks older than 300 seconds. (3) Restart standby replica. RESTRICTION: Modifying primary production database pool or initiating failover requires explicit human operator authorization.",
+    "metadata": {
+      "doc_id": "KB-RUNBOOK-001",
+      "author": "SRE Platform Team",
+      "updated": "2026-03-01",
+      "tier": "Tier-1",
+      "source": "Platform Operations Runbook"
+    }
+  },
+  {
+    "id": "KB-POLICY-002",
+    "title": "Enterprise Customer SLA & Service Credit Policy",
+    "category": "sla_policy",
+    "text": "Enterprise Tier customers are guaranteed 99.99% monthly availability with P1 incident response time under 15 minutes. In the event of confirmed service degradation lasting between 30 and 120 minutes, the customer is eligible for a standard 10% monthly service credit (maximum $350.00). Degradation exceeding 120 minutes qualifies for up to 20% credit, capped at $500.00 for support tier execution. Any credit adjustment above $500.00 requires VP approval.",
+    "metadata": {
+      "doc_id": "KB-POLICY-002",
+      "author": "Customer Success & Finance",
+      "updated": "2026-02-15",
+      "tier": "Enterprise",
+      "source": "Commercial SLA Master Agreement"
+    }
+  },
+  {
+    "id": "KB-POLICY-003",
+    "title": "Incident Escalation Matrix and Human Approval Gateways",
+    "category": "compliance",
+    "text": "All automated assistants and autonomous agents operating on production systems must enforce Human-in-the-Loop (HITL) checkpoints prior to executing any of the following state mutations: (a) Database configuration updates or pool resizing, (b) Issuing billing credits or financial refunds, (c) Elevating customer subscription privileges, (d) Quarantining customer accounts. The agent must present a structured diagnosis, quality evaluation score, and proposed action payload for human signoff.",
+    "metadata": {
+      "doc_id": "KB-POLICY-003",
+      "author": "Governance & Compliance Office",
+      "updated": "2026-01-20",
+      "tier": "All",
+      "source": "AI Governance Framework v2.4"
+    }
+  },
+  {
+    "id": "KB-RUNBOOK-004",
+    "title": "Customer Billing Dispute and Credit Adjustment Execution",
+    "category": "billing",
+    "text": "When a customer submits a valid billing dispute or service degradation claim, the support agent must: 1. Verify the customer contract tier in the database. 2. Calculate the eligible credit based on SLA terms. 3. Draft a resolution summary citing the SLA clause. 4. Submit the credit request through the HITL approval gate. 5. Once human approval is received, execute the credit transaction in the database and append an immutable audit log with ticket ID, amount, and approver identity.",
+    "metadata": {
+      "doc_id": "KB-RUNBOOK-004",
+      "author": "Billing Operations",
+      "updated": "2026-02-28",
+      "tier": "Billing",
+      "source": "Billing SOP"
+    }
+  }
+]
